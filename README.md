@@ -1,242 +1,233 @@
-# COVID Crisis Communications Starter Kit
+###
 
-This solution starter was created by technologists from IBM.  Translations are available: [JP](/README_JP.md)
+Learn how to create a voice-enabled chatbot using Node-RED and the IBM Watson Assistant, Watson Speech to Text, and Watson Text to Speech services.
 
-## Authors
+## Learning objectives
 
-- [Donna Byron](https://developer.ibm.com/profiles/dkbyron/) - IBM
-- [John Walicki](https://developer.ibm.com/profiles/walicki/) - IBM
-- [Matt Price](https://developer.ibm.com/profiles/pricem/) - IBM
-- [Mofizur Rahman](https://developer.ibm.com/profiles/mofizur.rahman) - IBM
-- [Pooja Mistry](https://developer.ibm.com/profiles/pmistry/) - IBM
-- [Upkar Lidder](https://developer.ibm.com/profiles/ulidder/) - IBM
+In this tutorial, you will:
 
-## Contents
+- Learn about Node-RED and see how to install it locally and on IBM Cloud
+- Explore the node-red-node-watson Node-RED nodes
+- Import and deploy the Watson Assistant chatbot example
+- Build a Call for Code COVID Crisis Communications voice-enabled chatbot solution
 
-1. [Overview](#overview)
-2. [Video](#video)
-3. [The idea](#the-idea)
-4. [How it works](#how-it-works)
-5. [Diagrams](#diagrams)
-6. [Documents](#documents)
-7. [Datasets](#datasets)
-8. [Technology](#technology)
-9. [Getting started](#getting-started)
-9. [Resources](#resources)
-10.[License](#license)
+## Prerequisites
 
-## Overview
+- Install Node-RED [locally](https://nodered.org/docs/getting-started/) or [Create a Node-RED Starter application](https://developer.ibm.com/components/node-red/tutorials/how-to-create-a-node-red-starter-application/) in IBM Cloud
+- [Create a Watson Assistant COVID-19 crisis communications chatbot](/README.md#getting-started).
 
-### What's the problem?
-In times of crisis, communications systems are often overwhelmed with people trying to find basic information about testing, symptoms, community response, and other resources. When communication lines get clogged, people who need real help can't get through. Chatbots help respond to tens, even hundreds, of thousands of messages a day.
+## Estimated time
 
-### How can technology help ?
+Completing this tutorial should take about 30 minutes.
 
-Whether via text, phone, websites, or communication apps, conversing with chatbots and other AI-enabled resources can play a critical role in helping communities quickly understand crucial information and free up customer service resources to focus on higher-level issues.
+## Architecture diagram
 
-IBM Watson Assistant service helps you build, train, and deploy conversational interactions into any application, device, or channel. Creating a chatbot using Watson Assistant can help address the issues that our users face while trying to gather accurate, relevant information. Whether you're trying to learn the latest news about Covid-19 or learn where there's testing in your area, a chatbot can play a major role in helping communities quickly understand crucial information and free up customer service resources to focus on higher-level issues.
+### Voice enabled COVID Crisis Communications Chatbot using Node-RED
 
-## Video
-
-[![Call for Code Solution Starter: Water sustainability in the context of climate change ](https://img.youtube.com/vi/WzEj_m0hwF0/0.jpg)](https://www.youtube.com/watch?v=WzEj_m0hwF0)
-
-## The idea
-
-COVID-19 has citizens looking for answers about symptoms and testing sites as well as current status of schools, transportation, and other public services. Using Watson Assistant, this Call for Code Starter Kit has designed a virtual assistant pre-loaded to understand and respond to common questions about COVID-19, scan COVID-19 news articles using Watson Discovery and respond to COVID statistics inquires with data from trusted sources.
-
-With this Watson Assistant powered Crisis Communications Starter Kit you can integrate a chatbot into your Call for Code solution in an IBM Cloud hosted web server, using a Slack integration or via a Node-RED Dashboard. 
-
-It can:
-- Respond by sharing consistent, accurate COVID-19 information
-- Help citizens quickly and easily access the latest information through their channel of choice – voice, text or collaborative tool
-- Free valuable resources by automating answers to common COVID-19 questions
-- Dynamically update information with the latest developments and recommendations
-
-The challenge for you is to build out from this framework to create a more complete solution.
-
-## How it works
-
-
-## Diagrams
-
-### Website integration with COVID-19 crisis communication chatbot
-
-![Crisis Comms Architecture diagram](/images/Crisis-Comms-Architecture-Nodejs-WebServer.png)
-
-1. User visits a website with the COVID-19 chatbot and asks a question.
-2. Node.js web server calls the Watson Assistant service hosted in IBM Cloud.
-3. Watson Assistant uses natural language understanding and machine learning to extract entities and intents of the user question.
-4. Source COVID-19 FAQ information from trusted CDC data.
-5. Watson Assistant invokes an OpenWhisk open source powered IBM Cloud Function.
-6. IBM Cloud Function calls the Watson Discovery service running in IBM Cloud.
-7. Watson Discovery scans news articles and responds with relevant articles.
-8. Watson Assistant invokes an OpenWhisk open source powered IBM Cloud Function.
-9. IBM Cloud Function calls the COVID-19 API to get statistics.
-10. Watson Assistant replies to the user inquiry.
-11. Node.js web server displays the chat answer to the user.
-
-### Slack integration with COVID-19 crisis communication chatbot
-
-![Crisis Comms Architecture diagram](/images/Crisis-Comms-Architecture-Slack-Integration.png)
-
-1. User invokes a COVID-19 Slack integration chatbot app and asks a question.
-2. Slack app calls the Watson Assistant service hosted in IBM Cloud.
-3. Watson Assistant uses natural language understanding and machine learning to extract entities and intents of the user question.
-4. Source COVID-19 FAQ information from trusted CDC data
-5. Watson Assistant invokes an OpenWhisk open source powered IBM Cloud Function.
-6. IBM Cloud Function calls the Watson Discovery service running in IBM Cloud.
-7. Watson Discovery scans news articles and responds with relevant articles.
-8. Watson Assistant invokes an OpenWhisk open source powered IBM Cloud Function.
-9. IBM Cloud Function calls the COVID-19 API to get statistics.
-10. Watson Assistant replies to the Slack application.
-11. Slack app displays the chat answer to the user.
-
-### Voice enabled COVID-19 crisis communication chatbot using Node-RED
+The following diagram shows the workflow for a Node-RED chatbot that answers questions about COVID-19.
 
 ![Crisis Comms Architecture diagram](/images/Crisis-Comms-Architecture-Node-RED.png)
 
-1. User visits a voice-enabled Node-RED website with the COVID-19 chatbot and asks a question.
-2. Node-RED records the speech wav file and calls the Watson Speech to Text service hosted in IBM Cloud.
+1. A user visits a voice enabled Node-RED website with the COVID-19 chatbot and asks a question.
+2. Node-RED records the speech wav audio format and calls the Watson Speech to Text service hosted in IBM Cloud.
 3. Watson Speech to Text uses machine learning to decode the user's speech.
 4. Watson Speech to Text replies with a transcript of the COVID-19 question and Node-RED calls Watson Assistant service hosted in IBM Cloud.
-5. Watson Assistant uses natural language understanding and machine learning to extract entities and intents of the user's question.
-6. Source COVID-19 FAQ information from trusted CDC data
-7. Watson Assistant invokes an OpenWhisk open source powered IBM Cloud Function.
-8. IBM Cloud Function calls the Watson Discovery service running in IBM Cloud.
+5. Watson Assistant uses natural language understanding and machine learning to extract entities and intents of the user question.
+6. Source COVID-19 FAQ information from trusted CDC data.
+7. Watson Assistant invokes an OpenWhisk open source-powered IBM Cloud Function.
+8. IBM Cloud Function calls Watson Discovery service running in IBM Cloud.
 9. Watson Discovery scans news articles and responds with relevant articles.
-10. Watson Assistant invokes an OpenWhisk open source powered IBM Cloud Function.
-11. IBM Cloud Function calls the COVID-19 API to get statistics.
+10. Watson Assistant invokes an OpenWhisk open source-powered IBM Cloud Function.
+11. IBM Cloud Function calls COVID-19 API to get statistics.
 12. Watson Assistant replies to the user inquiry and Node-RED sends the text transcript to Watson Text to Speech.
 13. Watson Text to Speech encodes the message in the user's language.
-14. Node-RED plays the chat answer wav file to the user.
-15. User listens to the chat answer.
+14. Node-RED plays the chat answer .wav file to the user.
+15. The user listens to the chat answer.
 
-## Documents
+## Steps
 
-### Trusted sources for COVID-19 information
-- [CDC COVID-19 FAQ](https://www.cdc.gov/coronavirus/2019-ncov/faq.html)
+### Learn about Node-RED
 
-### Tutorials and documentation:
+[Node-RED](http://nodered.org) is an open source programming tool for wiring together hardware devices, APIs, and online services in new and interesting ways. It provides a browser-based editor that makes it easy to wire together flows using the wide range of nodes in the palette that can be deployed to its runtime in a single-click.
 
-- [How-to guides for chatbots](https://www.ibm.com/watson/how-to-build-a-chatbot)
-- [Learning path: Getting started with Watson Assistant](https://developer.ibm.com/series/learning-path-watson-assistant/)
-- [Chatbot with Watson Discovery](https://github.com/IBM/watson-discovery-sdu-with-assistant)
-- [Chat Bot Slack Deployment](https://cloud.ibm.com/docs/assistant?topic=assistant-deploy-slack)
-- [Node-RED Slack Integration](https://www.ibm.com/cloud/blog/create-a-chatbot-on-ibm-cloud-and-integrate-with-slack-part-1)
-- [Train a speech-to-text model](https://developer.ibm.com/patterns/customize-and-continuously-train-your-own-watson-speech-service/)
-- [Making Programmatic Calls from Watson Assistant](https://cloud.ibm.com/docs/assistant?topic=assistant-dialog-webhooks)
-- [IBM Cloud Voice Agent with Twilio](https://developer.ibm.com/recipes/tutorials/ibms-voice-agent-with-watson-and-twilio/)
-- [Watson Assistant](https://cloud.ibm.com/docs/assistant?topic=assistant-getting-started)
+### Install Node-RED Dependencies nodes
 
-## Datasets
+After Node-RED is installed, add the dependencies for this tutorial:
 
-- [covid19api](https://covid19api.com/)
+- [node-red-node-ui-microphone](https://flows.nodered.org/node/node-red-node-ui-microphone)
+- [node-red-dashboard](https://flows.nodered.org/node/node-red-dashboard)
+- [node-red-node-watson](https://flows.nodered.org/node/node-red-node-watson)
+- [node-red-contrib-twc-covid19-tracker](https://flows.nodered.org/node/node-red-contrib-twc-covid19-tracker)
 
-## Technology
+#### Local installation instructions
 
-### IBM technology
+```
+npm install node-red-node-ui-microphone node-red-dashboard node-red-node-watson  node-red-contrib-twc-covid19-tracker
+```
 
-- [IBM Watson Assistant](https://www.ibm.com/cloud/watson-assistant/)
-- [Watson Discovery](https://www.ibm.com/cloud/watson-discovery)
-- [Watson Speech to Text](https://www.ibm.com/cloud/watson-speech-to-text)
-- [Watson Text to Speech](https://www.ibm.com/cloud/watson-text-to-speech)
-- [IBM Cloud Functions](https://cloud.ibm.com/functions/)
+#### IBM Cloud installation instructions
 
-### Open source technology
+- Instead of adding the additional packages via **Manage Palette**, use the IBM Cloud Toolchain and the git repository in IBM Cloud to add the following packages to the package.json. Commit the change and the CI/CD toolchain will restage the CF application.
 
-- [Node.js](https://nodejs.org/en/)
-- [Apache OpenWhisk](https://openwhisk.apache.org/)
-- [Node-RED](https://nodered.org/)
+```
+"node-red-node-ui-microphone":"0.x",
+"node-red-dashboard":"2.x",
+"node-red-contrib-twc-covid19-tracker":"0.x",
+```
 
-## Getting started
+### Explore node-red-node-watson Node-RED nodes
 
-### Prerequisite
+The [node-red-node-watson GitHub repository](https://github.com/watson-developer-cloud/node-red-node-watson) includes a collection of Node-RED nodes for IBM Watson services.  This package adds the following nodes to your Node-RED palette:
 
-- Register for an [IBM Cloud](https://www.ibm.com/account/reg/us-en/signup?formid=urx-42793&eventid=cfc-2020?cm_mmc=OSocial_Blog-_-Audience+Developer_Developer+Conversation-_-WW_WW-_-cfc-2020-ghub-starterkit-communication_ov75914&cm_mmca1=000039JL&cm_mmca2=10008917) account.
+- Assistant: Add conversational capabilities into applications
+- Discovery: List environments created for Watson Discovery
+- Language Identification: Detect the language used in text
+- Language Translator: Translate text from one language to another
+- Natural Language Classifier: Use machine learning algorithms to return the top matching predefined classes for short text inputs
+- Natural Language Understanding: Analyze text to extract meta-data from content such as concepts, entities, and keywords
+- Personality Insights: Use linguistic analytics to infer cognitive and social characteristics from text
+- Speech To Text: Convert audio containing speech to text
+- Text To Speech: Convert text to audio speech
+- Tone Analyzer: Discover, understand, and revise the language tones in text
+- Visual Recognition: Analyze visual appearance of images to understand their contents
 
-### Set up an instance of Watson Assistant
+### Import and deploy the COVID-19 crisis communication chatbot example
 
-Log in to IBM Cloud and provision a Watson Assistant instance.
+Now that you have installed the Node-RED dependencies, Watson nodes are available to integrate Watson AI services. Let's build a voice enabled chatbot example that uses Watson Assistant, Watson Speech to Text and Watson Text to Speech.
 
-**Step 1.** From the [IBM Cloud catalog](https://cloud.ibm.com/catalog/services/watson-assistant), provision an an instance of **Watson Assistant**.
-  ![Watson Assistant Catalog](/starter-kit/assistant/WA-Photo1.png)
+Import this [flow](/starter-kit/node-red/flows/Node-RED-Voice-Enabled-Chatbot.json) and **Deploy** the flow.
 
-**Step 2.**  Launch the Watson Assistant service.
+![Node-RED flow](./images/Node-RED-COVIDChatBot-flow.png)
 
-**Step 3.** Click **Create assistant** and follow [these detailed instructions](https://cloud.ibm.com/docs/assistant?topic=assistant-assistant-add) for how to create an assistant.
-  ![Watson Assistant Photo2 ](/starter-kit/assistant/WA-Photo2.png)
+### Create Watson Services on IBM Cloud
 
-**Step 4.** Name the Watson Assistant instance **COVID Crisis Communication**
-  ![Watson Assistant Photo3 ](/starter-kit/assistant/WA-Photo3.png)
+Before the flow will execute successfully, you must configure the Watson Assistant and Watson Speech nodes with new service instances and API Keys.
 
-**Step 5.** Click **Add Dialog skill** to add this to your assistant. Follow [the documentation](https://cloud.ibm.com/docs/assistant?topic=assistant-skill-dialog-add) if you have questions.
-  ![Watson Assistant Photo4 ](/starter-kit/assistant/WA-Photo4.png)
+#### Create a Watson Assistant instance
 
-**Step 6.** Click **Import skill > Choose JSON file** and import the [`skill-CDC-COVID-FAQ.json`](./starter-kit/assistant/skill-CDC-COVID-FAQ.json) file.
-  ![Watson Assistant Photo5 ](/starter-kit/assistant/WA-Photo5.png)
+1. If you haven't already, create a [Watson Assistant service instance](https://cloud.ibm.com/catalog/services/watson-assistant).
+   ![IBM Cloud Catalog Watson Assistant](/starter-kit/assistant/WA-Photo1.png)
 
-**Step 7.** Go back to the All Assistants page. From the action menu ( **`⋮`** ), open **Settings**.
-  ![Watson Assistant Photo6 ](/starter-kit/assistant/WA-Photo6.png)
+1. Follow these [instructions](/README.md) to provision a Watson Assistant chatbot for COVID-19
 
-**Step 8.**  On the Settings tab, click **API Details** on the left and make a note of the `Assistant ID` and `Api Key` for future use.
-  ![Watson Assistant Photo7 ](/starter-kit/assistant/WA-Photo7.png)
+#### Create a Watson Speech to Text service instance
 
-**Step 9.** Go back to the All Assistants page and click on the **Skills** link.
-  ![Watson Assistant Skills ](/starter-kit/assistant/WA-Skills.png)
+1. Create a [Watson Speech to Text Service instance](https://cloud.ibm.com/catalog/services/speech-to-text) instance from the IBM Cloud Catalog. Click **Create**.
 
-**Step 10.** On the Skill page, click on the action menu ( **`⋮`** ), open **View API Details**.
-  ![Watson Assistant Skill Properties](/starter-kit/assistant/WA-SkillAPIProperties.png)
+   ![Create Watson Speech to Text service instance](./images/Create-Watson-STT.png)
 
-**Step 11.** On the Skill Details page, make note of the `Skill ID` for future use.
-  ![Watson Assistant Skill Details](/starter-kit/assistant/WA-SkillDetails.png)
+ The Node-RED Watson Speech to Text node will need the `apikey` credentials for this new instance.
 
-**Step 12.**  Go back to your dialog skill and click on the **Preview Link** button on the side to get a link to test and verify your assistant.
-  ![Watson Assistant Photo9 ](/starter-kit/assistant/WA-Photo91.png)
+2. Once the Watson Speech to Text service is created, click **Service credentials** (1).
+3. Click the **View credentials** (2) twistie.
+4. Copy the **apikey** (3) for use in the next section
+   ![Watson STT credentials](./images/Watson-STT-apikey.png)  
 
-**Step 13.** Ask the Watson Assistant chatbot some questions about COVID-19.
+#### Create a Watson Text to Speech service instance
+
+Create a [Watson Text to Speech Service](https://cloud.ibm.com/catalog/services/text-to-speech) instance from the IBM Cloud Catalog.
+
+1. Click **Create**.
+   ![Create Watson Tex text Speech service instance](./images/Create-Watson-TTS.png)
+
+ The Node-RED Watson Text to Speech node will need the apikey credentials for this new instance
+
+2. After you create the Watson Text to Speech service, click **Service credentials** (1).
+3. Click the **View credentials** (2) twistie.
+4. Copy the **apikey** (3) for use in the next section.
+   ![Watson TTS credentials](./images/Watson-TTS-apikey.png)  
+
+### Enable Watson Speech Nodes with API keys
+
+1. Double click the **speech to text** node and paste the API key from the Watson Speech to Text service instance.
+2. Click **Done**.
+   ![Config Watson STT Node](./images/Config-Watson-STT-node.png)
+
+3. Double-click the **text to speech** node and paste the API key from the Watson Text to Speech service instance.
+4. Click **Done**.
+   ![Config Watson TTS Node](./images/Config-Watson-TTS-node.png)
+
+### Enable Watson Assistant node with the COVID-19 Workspace ID and API key
+
+1. Double-click the **assistant** node and paste the Skill ID into the Workspace ID field, Assistant Service Endpoint URL, and the API key from the Watson Assistant service instance.
+
+2. Click **Done**.
+   ![Config Watson Assistant Node](./images/Config-Watson-Assistant-node.png)
+
+### Parse intents and invoke API calls
+
+Watson Assistant returns the intents related to your questions.
+
+- The `Switch` node routes two intents to an `http request` node to query an external data source for current COVID statistics.
+- A `Function` node adds up the summary statistics and builds a sentence to be spoken.
+
+### Deploy the Node-RED flows
+
+- Click on the Red **Deploy** button.
+- To launch the Node-RED Dashboard, click on the **dashboard** tab in the right sidebar. Click on the arrow icon in the upper right corner.
+
+### Talk to your COVID-19 crisis chatbot
+
+To talk to your chatbot, click on the **microphone** input button and ask a question about COVID-19.
+
+![Node-RED Chatbot Dashboard](./images/Node-RED-COVIDChatBot-Dashboard.png)
+
+When someone asks a question, here's the Node-RED flow that happens in the background:
+
+![Node-RED flow](./images/Talk2COVIDChatBot.png)
+
+### Build a Node-RED COVID statistics dashboard
+
+**Bonus**: This flow includes a Node-RED dashboard with several gauges to display COVID-19 statistics.
+
+![Node-RED COVID Data Dashboard](./images/Node-RED-COVID-Dashboard.png)
+
+- Every hour, the Node-RED flow will call the [TWC COVID-19 Disease Tracker](https://github.com/Call-for-Code/node-red-contrib-twc-covid19-tracker)  API and collect dynamic COVID-19 infection statistics.
+- The country data is aggregated and then the gauges are updated.
+
+### Learn more about the dashboard code
+
+The following Node-RED flow is included in this tutorial:
+
+![Node-RED COVID Data Dashboard](./images/Node-RED-COVID-Dashboard-flow.png)
+
+The `TWC COVID-19 Country Report` node uses the [TWC COVID-19 Global Disease Country List API](https://weather.com/swagger-docs/ui/sun/v3/sunV3DiseaseTrackerCountryList.json) to retrieve the daily information for all countries with infections.
+
+Each `function` node then aggregates the Total Confirmed Cases, Total Fatalities and Total Countries and sends the results to the corresponding `gauge` node.
+
+This is the code in the `function` node:
+
+```javascript
+let totalConfirmedCase = 0;
+
+msg.payload.covid19.confirmed.map(function(line){
+    totalConfirmedCase += line;
+});
+
+msg.payload = totalConfirmedCase;
+return msg;
+```
+
+You can expand the above dashboard to include additional COVID-19 data visualization using the [node-red-contrib-twc-covid19-tracker](https://github.com/Call-for-Code/node-red-contrib-twc-covid19-tracker) data to build charts, tables, maps and enhanced chatbot user experiences.
+
+### Build a SMS enabled Watson Assistant COVID Chatbot
+
+Import this [flow](/starter-kit/node-red/flows/Node-RED-COVID-SMS-ChatBot.json) and **Deploy** the flow.
+
+- This example requires some additional dependencies:
+  - [node-red-node-twilio](https://flows.nodered.org/node/node-red-node-twilio)
+
+- This flow requires a [Twilio](https://www.twilio.com/) Number with a SMS Messaging webhook configured to POST to the URL specified by the **HTTP In** node.
+- For Twilio to retransmit the incoming SMS to this Node-RED   endpoint, Node-RED needs to be reachable and hosted on the Internet (not on your local computer).  Follow the instructions above to deploy Node-RED on IBM Cloud.
+
+  ![Twilio Messaging Webhook Config](./images/Twilio-Messaging-Webhook.png)
+
+![Node-RED flow](./images/Node-RED-COVID-SMS-ChatBot-flow.png)
+
 <p align="center">
-<img width="50%" height="50%" src="https://raw.githubusercontent.com/Call-for-Code/Solution-Starter-Kit-Communication-2020/master/starter-kit/assistant/WA-Photo101.png">
+<img width="25%" height="25%" src="./images/SMS-Covid19-ChatBot.png">
 </p>
 
+## Build a Call for Code Crisis Communications solution!
 
-### Connect your chatbot to data sources via a webhook
-
-Now that you’ve created your Watson Assistant-enabled chatbot, you need to connect it to a data source. With Watson Assistant, you need to do this via a webhook.
-
-A webhook is a mechanism that allows you to call out to an external program based on something happening in your program. When used in a dialog skill, a webhook is triggered when the assistant processes a node that has a webhook enabled. The webhook collects data that you specify or that you collect from the user during the conversation and save in context variables. It sends the data as part of a HTTP POST request to the URL that you specify as part of your webhook definition. The URL that receives the webhook is the listener. It performs a predefined action using the information that you pass to it as specified in the webhook definition, and can optionally return a response.
-
-[Follow these instructions for setting up webhook](./starter-kit/webhook/README.md) with the Watson Assistant chatbot you just provisioned.
-
-### Integrate your COVID-19 chatbot with Slack
-
-Now that you have a functioning Watson Assistant, let's deploy it to Slack. Slack is a cloud-based messaging application that helps people collaborate with one another. After you configure a dialog skill and add it to an assistant, you can integrate the assistant with Slack.
-
-When integrated, depending on the events that you configure the assistant to support, your assistant can respond to questions that are asked in direct messages or in channels where the assistant is directly mentioned.
-
-[Read these instructions](/starter-kit/slack/README.md) to learn how to integrate your COVID-19 chatbot with Slack.
-
-![Slack Gif](/starter-kit/slack/readme_images/Slack.gif)
-
-### Integrate your COVID-19 chatbot with Node-RED
-
-Want to create a voice-enabled chatbot? This tutorial teaches you how to [create a voice enabled chatbot using Node-RED](./starter-kit/node-red/README.md) and the Watson Assistant, Watson Speech to Text, and Watson Text to Speech nodes.
-
-### Embed your COVID-19 chatbot on a Node.js website
-
-Finally, you can embed your COVID-19 crisis communication chatbot on a Node.js website.
-
-- Follow the [COVID-Simple installation instructions](./starter-kit/covid-simple/README.md)
-
-## Disclosures
-
-This tool is intended to provide information based on currently available CDC and other public information to help you make decisions about seeking appropriate medical care. This system is not intended for the diagnosis or treatment of disease or other conditions, including COVID-19, and you should not provide any personally identifying or private health information.
-
-This Watson Assistant bot is populated with data that is sourced from the following resources:
-
-- Most static responses provide information found on the CDC's COVID FAQ Page: https://www.cdc.gov/coronavirus/2019-ncov/faq.html
-- Dynamic infection and death counts are sourced from Johns Hopkins University via the following API: https://www.covid19api.com/
-- Dynamic news stories are sourced from Watson Discovery's news feed. Additional information on that service can be found here: https://www.ibm.com/watson/services/discovery-news/
-
-## License
-
-This solution starter is made available under the [Apache 2 License](LICENSE).
+Now that you have completed this tutorial, you are ready to modify these example flows and Node-RED Dashboard to build a [Call for Code COVID Crisis Communications](https://developer.ibm.com/callforcode/getstarted/covid-19/) solution.
